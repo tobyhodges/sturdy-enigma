@@ -8,9 +8,6 @@
 #cp: Carpentries (to use for instructor training for instance)
 #incubator: The Carpentries Incubator
 carpentry: 'swc'
-
-
-
 #Overall title for pages.
 title: 'Gitによるバージョン管理'
 #Date the lesson was created (YYYY-MM-DD, this is empty by default)
