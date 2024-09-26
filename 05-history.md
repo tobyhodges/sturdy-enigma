@@ -1,29 +1,31 @@
 ---
-title: 履歴の探索
+title: Дослідження історії
 teaching: 25
 exercises: 0
 ---
 
 ::::::::::::::::::::::::::::::::::::::: objectives
 
-- リポジトリのHEADとは何か、またその使い方を説明出来るようになりましょう。
-- Gitのコミット番号を特定して使ってみましょう。
-- 追跡調査されるファイルのいろいろなバージョンを比較してみましょう。
-- ファイルの古いバージョンを復元してみましょう。
+- Пояснення, що таке HEAD репозиторію та як його використовувати.
+- Визначення та використання ідентифікаторів комітів Git.
+- Порівняння різних версій відстежуваних файлів.
+- Відновлення старих версій файлів.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::: questions
 
-- ファイルの古いバージョンを復元するにはどうすればよいでしょうか?
-- 変更内容を再調査するにはどうすればよいでしょうか?
-- ファイルの古いバージョンを復元するにはどうすればよいでしょうか?
+- Як визначити старі версії файлів?
+- Як переглянути свої зміни?
+- Як відновити старі версії файлів?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-前のレッスンで見たように、コミットを識別子で参照できます。  識別子 `HEAD` を使うことで作業ディレクトリの _最新のコミット_ を参照できます。
+Як ми побачили у попередньому епізоді, ми можемо посилатися на коміти за їх ідентифікаторами.  Ви можете звернутися до _останнього коміту_ робочого каталогу
+за допомогою ідентифікатора `HEAD`.
 
-`mars.txt` に一度に1行ずつ追加しているので、進展を見て確認することは簡単です。それでは `HEAD` を使ってそれを行ってみましょう。  始める前に、 `mars.txt` にもう1行加えることで変更を加えてみましょう。
+Оскільки кожного разу ми додавали тільки один рядок до `mars.txt`, зараз нам буде легко простежити досягнутий прогрес. Зробімо це, використовуючи `HEAD`.  Перш ніж ми почнемо,
+давайте змінимо значення на `mars.txt`, додавши ще один рядок.
 
 ```bash
 $ nano mars.txt
@@ -37,7 +39,7 @@ But the Mummy will appreciate the lack of humidity
 An ill-considered change
 ```
 
-それでは、何が得られるか見てみましょう。
+Тепер подивимося на наш результат.
 
 ```bash
 $ git diff HEAD mars.txt
@@ -55,13 +57,14 @@ index b36abfd..0848c8d 100644
 +An ill-considered change.
 ```
 
-これは、 `HEAD` を省略した場合 (試してみてください) に得られるものと同じです。  これの本当の利点は、以前のコミットを参照できることです。  それを行うには、`HEAD` より前のコミットを参照するために `~1` (「~」は「チルダ」、発音は [**til**-d_uh_]) を追加します。
+Це те саме, що ви отримаєте, якщо пропустите `HEAD` (спробуйте це).\
+Але справжня користь полягає у тому, що ви таким чином можете посилатися на попередні коміти.  Наприклад, додаючи `~1` (де "~" - це тільда), ми посилаємось на коміт зроблений безпосередньо перед `HEAD`.
 
 ```bash
 $ git diff HEAD~1 mars.txt
 ```
 
-古いコミット間の違いを確認したい場合は、`git diff` を再度使用できますが、`HEAD~1`、`HEAD~2` などの表記を使用して、それらを参照するには下記を行います:
+Якщо ми хочемо побачити різницю між старішими комітами, ми можемо знову використовувати `git diff`, використовуючи для послання на них `HEAD~1`, `HEAD~2` тощо:
 
 ```bash
 $ git diff HEAD~2 mars.txt
@@ -79,7 +82,7 @@ index df0654a..b36abfd 100644
 +An ill-considered change
 ```
 
-`git diff` を使用して表示されるコミットと作業ディレクトリの _違い_ ではなく、古いコミットで行った変更だけでなくコミットメッセージも表示する `git show`を使用することもできます。
+Ми також можемо використати команду `git show`, яка показує які зміни ми внесли у будь-якому попередньо зробленому коміті, а також і повідомлення коміту (на відміну від команди `git diff` яка покаже _різницю_ між комітом та нашим робочим каталогом).
 
 ```bash
 $ git show HEAD~2 mars.txt
@@ -101,14 +104,18 @@ index 0000000..df0654a
 +Cold and dry, but everything is my favorite color
 ```
 
-このようにして、コミットのチェーンを構築できます。
-チェーンの最新の終わりは `HEAD` と呼ばれます; `~` 表記を使用して以前のコミットを参照できるため、`HEAD~1` は「以前のコミット」を意味し、`HEAD~123` は現在の場所から123個前のコミットに戻ります。
+Таким чином, ми можемо побудувати ланцюжок комітів.
+Останній кінець ланцюжка називається `HEAD`;
+ми можемо посилатися на попередні коміти, використовуючи нотацію `~`,
+тому `HEAD~1`
+означає "попередній коміт",
+тоді як `HEAD~123` повертається на 123 коміти назад від того місця, де ми зараз знаходимось.
 
 We can also refer to commits using
 those long strings of digits and letters
 that both `git log` and `git show` display.
-これらは一個一個の変更に対するユニークなIDであり、「ユニーク」は本当に唯一であることを意味します: どのコンピューターのどのファイルの変更の組み合わせに対しても、ユニークな40文字の ID があります。
-最初のコミットにはID `f22b25e3233b4645dabd0d81e651fe074bd8e73b` が与えられたので、これを試してみましょう:
+Це унікальні ідентифікатори змін, де "унікальний" насправді означає унікальний: кожна зміна будь-якого набору файлів на будь-якому комп'ютері буде мати унікальний 40-символьний ідентифікатор.
+Наш перший коміт отримав ідентифікатор `f22b25e3233b4645dabd0d81e651fe074bd8e73b`, тож спробуймо наступне:
 
 ```bash
 $ git diff f22b25e3233b4645dabd0d81e651fe074bd8e73b mars.txt
@@ -126,7 +133,7 @@ index df0654a..93a3e13 100644
 +An ill-considered change
 ```
 
-これは正しい答えですが、ランダムな40文字の文字列を入力するのは面倒なので、Gitは最初の数文字だけを使えばよいようにしてくれています:
+Це правильна відповідь, проте, введення випадкових рядків з 40 символів дуже незручно. Тож Git дозволяє нам використовувати тільки перші кілька символів (як правило, сім для проєктів нормального розміру):
 
 ```bash
 $ git diff f22b25e mars.txt
@@ -144,10 +151,11 @@ index df0654a..93a3e13 100644
 +An ill-considered change
 ```
 
-やりました! こんなわけで ファイルへの変更を保存して、何が変更されたかを確認できます。 では、どうすれば古いバージョンのものを復元できるでしょうか?
-`mars.txt`への最後の更新（「熟考を欠いた変更」）について気が変わったとしましょう。
+Це чудово! Отже,
+ми можемо зберегти зміни у файлах і побачити, що ми змінили. Наступне питання - а як ми можемо відновити їх старіші версії?
+Припустимо, що ми передумали щодо останнього оновлення файлу `mars.txt` (рядок "ill-considered change").
 
-`git status` は、ファイルが変更されたことを示しますが、それらの変更はステージングされていません:
+`git status` зараз каже нам, що файл був змінений, але ці зміни не були додані до зони стейджингу:
 
 ```bash
 $ git status
@@ -213,7 +221,7 @@ no changes added to commit (use "git add" and/or "git commit -a")
 
 ```
 
-変更はステージング領域にあることに注意してください。
+Звернуть увагу, що зміни зараз знаходяться у зоні стейджінгу.
 Again, we can put things back the way they were by using `git restore`:
 
 ```bash
@@ -227,31 +235,28 @@ The two moons may be a problem for Wolfman
 But the Mummy will appreciate the lack of humidity
 ```
 
-取り消したい変更の一個**前**のコミット番号を使う必要があることを覚えておくことが重要です。
-よくある間違いは、破棄しようとしている変更を行ったコミットの番号を使用することです。
+Важливо пам'ятати, що ми повинні використовувати номер коміту, який ідентифікує стан репозиторію _до_ зміни, яку ми намагаємося скасувати.
+Поширеною помилкою є використання номеру коміту, в якому ми зробили зміни, які намагаємося скасувати.
 In the example below, we want to retrieve the state from before the most
 recent commit (`HEAD~1`), which is commit `f22b25e`. We use the `.` to mean all files:
 
 ![](fig/git-restore.svg){alt='A diagram showing how git restore can be used to restore the previous version of two files'}
 
-つまり、すべてをまとめると、Gitがどのように機能するかは次の漫画のようになります:
+Отже, якщо скласти це все разом, то Git працює як зображено у цьому коміксі:
 
 ![https://figshare.com/articles/How\_Git\_works\_a\_cartoon/1328266](fig/git_staging.svg){alt='A diagram showing the entire git workflow: local changes are staged using git add, applied to the local repository using git commit, and can be restored from the repository using git checkout'}
 
-ファイルを1つずつ元に戻すことができるという事実は
-人々が研究を整理する方法を変えることがあります。
-すべての変更が1つの大きなドキュメントに含まれている場合、
-後で結論に加えられた変更を元に戻さずに、
-序論への変更を元に戻すことは困難です(不可能ではありませんが)。
-一方、序論と結論を別々のファイルに保存すると、時間を前後に移動するのがはるかに簡単になります。
+Той факт, що файли можна відновлювати окремо, сприяє змінам в організації роботи.
+Якщо все знаходиться в одному величезному документі, буде важко (але не неможливо) скасувати зміни у вступі без скасування також змін, внесених пізніше до висновку.
+З іншого боку, якщо вступ і висновок зберігаються в окремих файлах, рухатися вперед і назад в часі стає набагато легше.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## ファイルの古いバージョンの復元
+## Відновлення старих версій файлу
 
-ジェニファーは、数週間取り組んできたPythonスクリプトに変更を加えました。そして今朝行った変更により、スクリプトが "壊れ"、動作しなくなりました。 彼女はそれを修正しようとして約1時間費やしましたが、うまく機能しません...
+Дженніфер зробила цього ранку деякі зміни у скрипті Python, над яким вона до цього працювала тижнями, та "зламала" його - він більше не запускається. Вона витратила майже годину, намагаючись виправити його, але безрезультатно...
 
-幸い、彼女はGitを使用してプロジェクトのバージョンを追跡していました! 以下のどのコマンドで、`data_cruncher.py` と呼ばれるPythonスクリプトの最後にコミットされたバージョンを復元できるでしょうか？
+На щастя, вона використовує Git для відстеження змін у свому проєкті! Які з наведених нижче команд допоможуть їй відновити останню збережену у Git версію її скрипту, який називається `data_cruncher.py`?
 
 1. `$ git restore`
 
@@ -261,21 +266,18 @@ recent commit (`HEAD~1`), which is commit `f22b25e`. We use the `.` to mean all 
 
 4. `$ git restore -s <unique ID of last commit> data_cruncher.py`
 
-5. Both 2 and 4
+5. Як 2, так і 4
 
 :::::::::::::::  solution
 
-## 解答
+## Рішення
 
-答えは (5) - 2 と 4 の両方です。
+Відповідь (5) - як 2, так і 4.
 
 The `restore` command restores files from the repository, overwriting the files in your working
-directory. Answers 2 and 4 both restore the _latest_ version _in the repository_ of the file
-`data_cruncher.py`. Answer 2 uses `HEAD` to indicate the _latest_, whereas answer 4 uses the
-unique ID of the last commit, which is what `HEAD` means.
+directory. Обидві відповіді 2 та 4 відновлюють _останню збережену в репозиторії_ версію файлу `data_cruncher.py`. Відповідь 2 використовує `HEAD`, щоб вказати _останній_ коміт, тоді як відповідь 4 використовує унікальний ідентифікатор останнього коміту, що саме й означає `HEAD`.
 
-Answer 3 gets the version of `data_cruncher.py` from the commit _before_ `HEAD`, which is NOT
-what we wanted.
+Відповідь 3 замінить `data_cruncher.py` його версією з коміту _перед_ `HEAD`, що НЕ є тим, що ми хотіли.
 
 Answer 1 results in an error. You need to specify a file to restore. If you want to restore all files
 you should use `git restore .`
@@ -286,36 +288,34 @@ you should use `git restore .`
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## コミットを戻すことについて
+## Скасування коміту
 
-ジェニファーは同僚とPythonスクリプトで共同作業を行っており、グループのリポジトリへの彼女の最新のコミットが間違っていることに気付き、それを元に戻したいと思っています。  ジェニファーは、グループリポジトリのみんなが正しい変更を取得できるように、正しく元に戻す必要があります。  ジェニファーは、グループリポジトリのみんなが正しい変更を取得できるように、正しく元に戻す必要があります。 `git revert [wrong commit ID]` は、ジェニファーの誤ったコミットを元に戻す新しいコミットを作ります。
+Дженніфер співпрацює з колегами над її скриптом Python.  Вона зрозуміла, що її останній коміт до репозиторію проєкту містив помилку, і хоче його скасувати.  Дженніфер хоче скасувати його правильним чином, щоб всі користувачі репозиторію цього проєкту отримали правильні зміни. Команда `git revert [erroneous commit ID]` створить новий коміт, який скасує помилковий коміт.
 
 The command `git revert` is
 different from `git restore -s [commit ID] .` because `git restore` returns the
 files not yet committed within the local repository to a previous state, whereas `git revert`
 reverses changes committed to the local and project repositories.
 
-以下は、ジェニファーが`git revert`を使用するための正しい手順と説明ですが、不足しているコマンドは何でしょうか？
+Нижче наведені правильні кроки та пояснення для Дженніфер щодо користування `git revert`. Яка команда відсутня?
 
-1. `________ # コミットIDを見つけるために、プロジェクトのgitの 履歴を見ます`
+1. `________ # Подивіться на історію змін, щоб знайти ідентифікатор коміту`
 
-2. そのIDをコピーします (IDの最初の数文字は例えば 0b1d055)。
+2. Скопіюйте цей ID (перші кілька символів ID, наприклад 0b1d055).
 
 3. `git revert [commit ID]`
 
-4. 新しいコミットメッセージを入力します。
+4. Введіть повідомлення для нового коміту.
 
-5. 保存して閉じます。
+5. Збережіть його та закрийте редактор.
 
 :::::::::::::::  solution
 
-## 解答
+## Рішення
 
-The command `git log` lists project history with commit IDs.
+Команда `git log` зображує історію проєкту з ідентифікаторами комітів.
 
-The command `git show HEAD` shows changes made at the latest commit, and lists
-the commit ID; however, Jennifer should double-check it is the correct commit, and no one
-else has committed changes to the repository.
+Команда `git show HEAD` покаже зміни, зроблені в останньому коміті, і покаже його ID; однак Дженніфер повинна перевірити, що це правильний коміт, а не нові зміни, які зробив у спільному репозиторії хтось інший.
 
 :::::::::::::::::::::::::
 
@@ -323,9 +323,9 @@ else has committed changes to the repository.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## ワークフローと履歴の理解
+## Розуміння послідовності дій та історії
 
-最後のコマンドの出力は何でしょうか？
+Який результат останньої команди в цій послідовності?
 
 ```bash
 $ cd planets
@@ -360,23 +360,19 @@ Error because you have changed venus.txt without committing the changes
 
 :::::::::::::::  solution
 
-## 解答
+## Рішення
 
-答えは2です。
+Правильною є відповідь 2.
 
-The command `git add venus.txt` places the current version of `venus.txt` into the staging area.
-The changes to the file from the second `echo` command are only applied to the working copy,
-not the version in the staging area.
+Команда `git add venus.txt` розміщує поточну версію 'venus.txt' в зоні стейджингу.
+Зміни до файлу з другої команди `echo` будуть зроблені лише у робочій копії цього файлу, але не у його версії в зоні стейджингу.
 
-So, when `git commit -m "Comment on Venus as an unsuitable base"` is executed,
-the version of `venus.txt` committed to the repository is the one from the staging area and
-has only one line.
+Тож, коли виконується команда `git commit -m "Comment on Venus as an unsuitable base"`, версія `venus.txt`, яка буде збережена у коміті, буде з зони стейджингу та буде мати тільки один рядок.
 
-At this time, the working copy still has the second line (and
-`git status` will show that the file is modified). However, `git restore venus.txt`
+На цей час робоча копія файлу ще має другий рядок (і тому `git status` покаже, що файл змінено). However, `git restore venus.txt`
 replaces the working copy with the most recently committed version of `venus.txt`.
 
-So, `cat venus.txt` will output
+Тож, `cat venus.txt` покаже
 
 ```output
 Venus is beautiful and full of love.
@@ -388,17 +384,17 @@ Venus is beautiful and full of love.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## `git diff` の理解のチェック
+## Перевірка розуміння `git diff`
 
-このコマンドをよく考えてみてください: `git diff HEAD~9 mars.txt`。 このコマンドを実行したらどうなるだろうと予測しますか? 実行すると何が起こっていますか? またそれはなぜでしょうか?
+Розглянемо цю команду: `git diff HEAD~9 mars.txt`. Що, на вашу думку, зробить ця команда, якщо ви її виконаєте? Що станеться, коли ви її виконаєте? Чому?
 
-別のコマンド `git diff [ID] mars.txt` を試しましょう、ここでの [ID] は最新のコミットのユニークな ID で置き換えられます。 あなたは何が起こるだろうと思いますか?
+Спробуйте іншу команду, `git diff [ID] mars.txt`, де [ID] замінено на унікальний ідентифікатор вашого останнього коміту. Як ви думаєте, що вона зробить? Виконайте її та перевірте, чи це так.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## ステージされた変更の除去
+## Скасування змін у зоні стейджингу
 
 `git restore` can be used to restore a previous commit when unstaged changes have
 been made, but will it also work for changes that have been staged but not committed?
@@ -407,10 +403,10 @@ then use `git restore` to see if you can remove your change.
 
 :::::::::::::::  solution
 
-## 解答
+## Відповідь
 
 After adding a change, `git restore` can not be used directly.
-Let's look at the output of `git status`:
+Подивіться на результат `git status`:
 
 ```output
 On branch main
@@ -420,9 +416,7 @@ Changes to be committed:
 
 ```
 
-Note that if you don't have the same output
-you may either have forgotten to change the file,
-or you have added it _and_ committed it.
+Зауважте, що якщо ви не маєте такого самого результату, то можливо, ви забули змінити файл, або ви не тільки додали його до зони стейджингу, _а також_ зробили коміт.
 
 Using the command `git restore mars.txt` now does not give an error,
 but it does not restore the file either.
@@ -433,7 +427,7 @@ to unstage the file:
 $ git restore --staged mars.txt
 ```
 
-Now, `git status` gives us:
+Тепер `git status` зображує наступне:
 
 ```bash
 $ git status
@@ -469,36 +463,34 @@ nothing to commit, working tree clean
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## 履歴を探索し、要約する
+## Перегляд історії
 
-履歴の探索はgitの重要な要素であり、特にそのコミットが数ヶ月前のものである場合は、適切なコミットIDを見つけるのが難しいことがよくあります。
+Перегляд історії є важливою частиною роботи з Git, але часто нелегко знайти правильний ідентифікатор коміту, особливо якщо коміт був зроблений декілька місяців тому.
 
-`planets` プロジェクトに50を超えるファイルがあると考えてください。
-あなたは `mars.txt` 中の特定のテキストが変更されたコミットを見つけたいとします。
-`git log` と入力すると、非常に長いリストが表示されました。
-どうやって探す範囲を限定しますか?
+Уявіть, що проєкт `planets` має більш ніж 50 файлів.
+Ви хотіли б знайти коміт, який змінює певний текст у `mars.txt`.
+Коли ви вводите `git log`, з'являється дуже довгий список.
+Як можна звузити коло пошуку?
 
-`git diff` コマンドを使用すると、1つの特定のファイルを探索できることを思い出してください、 例えば、`git diff mars.txt` 。 ここでも同様のアイデアを適用できます。
+Нагадаємо, що команда `git diff` може використовуватись для одного конкретного файлу, наприклад, `git diff mars.txt`. Ми можемо застосувати тут подібну ідею.
 
 ```bash
 $ git log mars.txt
 ```
 
-Unfortunately some of these commit messages are very ambiguous, e.g., `update files`.
-How can you search through these files?
+На жаль, деякі з цих повідомлень комітів дуже неоднозначні, наприклад, `update files`.
+Як же переглянути усі ці версії файлу?
 
-Both `git diff` and `git log` are very useful and they summarize a different part of the history
-for you.
-Is it possible to combine both? Let's try the following:
+Обидві команди `git diff` та `git log` дуже корисні для отримання звітів про різні деталі історії проєкту.
+Але чи можна об'єднати їх результат в одну команду? Давайте спробуємо наступне:
 
 ```bash
 $ git log --patch mars.txt
 ```
 
-You should get a long list of output, and you should be able to see both commit messages and
-the difference between each commit.
+Ви повинні отримати довгий список, у якому ви побачите як повідомлення коміту, так і зроблені зміни.
 
-Question: What does the following command do?
+Питання: Що робить наступна команда?
 
 ```bash
 $ git log --patch HEAD~9 *.txt
@@ -508,7 +500,7 @@ $ git log --patch HEAD~9 *.txt
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
-- `git diff` は、コミット間の違いを表示します。
+- `git diff` відображає відмінності між комітами.
 - `git restore` recovers old versions of files.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
