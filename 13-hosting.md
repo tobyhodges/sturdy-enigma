@@ -1,101 +1,94 @@
 ---
-title: Хостинг
+title: Hosting
 teaching: 10
 exercises: 0
 ---
 
 ::::::::::::::::::::::::::::::::::::::: objectives
 
-- Пояснити різні варіанти хостингу наукової роботи.
+- 科学研究のホスティングのためのさまざまなオプションについて説明します。
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::: questions
 
-- Де я можу розміщувати репозиторії контролю версій?
+- バージョン管理リポジトリはどこでホストすればよいでしょうか?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 After [choosing a license](11-licensing.md),
 another big question for groups that want to open up their work is where to
-host their code and data.  Один із варіантів полягає в тому, щоб лабораторія, кафедра чи
-університет надали сервер, керували обліковими записами та резервними копіями тощо.  Основна перевага цього полягає в тому, що при цьому зʼясується кому що належить. Це особливо
-важливо, коли будь-який матеріал є чутливим (тобто стосується експериментів
-за участю людей або може бути використаний у патентній заявці).  Основними
-недоліками цього є вартість надання послуги та її довговічність: вчений,
-який витратив десять років на збір даних, бажав би бути впевненим, що дані
-все ще будуть існувати через десять років. Але це значно перевищує термін
-більшості грантів, які фінансують академічну інфраструктуру.
+host their code and data.  1 つのオプションは、研究室、学部、または大学がサーバーを提供し、アカウントやバックアップなどを管理することです。  これの主な利点は、誰が何を所有しているかを明確にすることです。
+それは、題材が機密性の高いもの (すなわち、ヒトを対象とする実験に関するもの、または特許出願に使用される可能性のあるもの) である場合に特に重要です。  主な欠点は、サービスの提供コストとその存続期間です。データ収集に 10 年を費やした科学者は、10 年後もデータが利用できることを確認したいと考えますが、それは学術インフラに資金提供されるほとんど助成金の存続期間をはるかに超えています。
 
-Інший варіант - придбати домен і заплатити інтернет-провайдеру (ISP)
-за його підтримку.  Це дає індивіду або групі більше контролю, і
-обходить проблеми, які можуть виникнути при переході з однієї установи в іншу. Але
-це вимагає більше часу і зусиль для налаштування, ніж попередній варіант або
-наступний варіант.
+もう 1 つのオプションは、ドメインを購入し、それをホストするためにインターネット サービス プロバイダー (ISP) に料金を支払うことです。  これにより、個人またはグループによる制御が強化され、ある機関から別の機関に移動するときに発生する可能性のある問題を回避できます。
+ただし、上記のオプションまたは下記のオプションよりもセットアップに多くの時間と労力が必要です。
 
-Третім варіантом є використання публічного хостингу, як
-[GitHub](https://github.com), [GitLab](https://gitlab.com), або
-[BitBucket](https://bitbucket.org).
-Кожна з цих платформ надає вебінтерфейс, який дозволяє людям створювати,
-переглядати та редагувати свої репозиторії.  Ці платформи також надають
-засоби комунікації та управління проєктами, такі як: відстеження проблем, вікі-сторінки,
-автоматичні сповіщення електронною поштою, та перегляд коду.  Вони отримують перевагу від того, що легше добре підтримувати одну велику платформу, ніж запустити багато менших сервісів з тим самим рівнем якості.  Також, на великих платформах легше співпрацювати.  Їх використання
-може допомогти звʼязати ваш проєкт зі
-спільнотами, які вже використовують ту ж саму платформу.
+3 番目のオプションは、
+[GitHub](https://github.com)、 [GitLab](https://gitlab.com)、または
+[BitBucket](https://bitbucket.org) のようなパブリック ホスティング サービスを使用することです。
+これらの各サービスは、コードリポジトリを作成、閲覧、編集できる Web インターフェイスを提供します。  これらのサービスは、イシュートラッキング、Wiki ページ、メール通知、コードレビューなどのコミュニケーションやプロジェクト管理ツールも提供します。  These services benefit from economies of
+scale and network effects: it's easier to run one large service well than to run
+many smaller services to the same standard.  It's also easier for people to
+collaborate.  Using a popular service can help connect your project with
+communities already using the same service.
 
-Наприклад, Software Carpentry [знаходиться на GitHub](https://github.com/swcarpentry/), де ви можете знайти джерело для цієї
-сторінки. Будь-хто з обліковим записом GitHub може запропонувати зміни до цього тексту.
+As an example, Software Carpentry [is on GitHub](https://github.com/swcarpentry/) where you can find the source for this
+page. Anyone with a GitHub account can suggest changes to this text.
 
-Репозиторіям GitHub також можуть бути присвоєні DOI, [шляхом підключення їх релізів до Zenodo](https://guides.github.com/activities/citable-code/). Наприклад,
-[`10.5281/zenodo.57467`](https://zenodo.org/record/57467) - це DOI,
-який був "викарбуваний" для цього введення до Git.
+GitHub repositories can also be assigned DOIs, by connecting its releases to
+Zenodo. For example,
+[`10.5281/zenodo.7908089`](https://zenodo.org/record/7908089) is the DOI that has
+been "minted" for this introduction to Git.
 
-Використання великих, добре налагоджених сервісів також може допомогти вам швидко
-скористатися перевагами потужних інструментів.  Один з таких інструментів, безперервна інтеграція (БI),
-може автоматично запускати програмні збірки та тести щоразу, коли виконується код або
-надходять запити на отримання змін.  Пряма інтеграція БI з онлайн-хостингом означає, що ця інформація
-присутня в будь-якому запиті на отримання змін, і допомагає підтримувати цілісність коду та
-стандарти якості.  Хоча БI може бути доступна у варіантах із самостійним хостингом,
-використання онлайн-сервісу вимагає набагато менше зусиль з налаштування та обслуговування.  Крім того, такі інструменти часто надаються безкоштовно для
-проєктів з відкритим вихідним кодом, а також доступні для приватних репозиторіїв за окрему плату.
+Using large, well-established services can also help you quickly take advantage
+of powerful tools.  One such tool, continuous integration (CI), can
+automatically run software builds and tests whenever code is committed or pull
+requests are submitted.  Direct integration of CI with an online hosting service
+means this information is present in any pull request, and helps maintain code
+integrity and quality standards.  While CI is still available in self-hosted
+situations, there is much less setup and maintenance involved with using an
+online service.  Furthermore, such tools are often provided free of charge to
+open source projects, and are also available for private repositories for a fee.
 
 :::::::::::::::::::::::::::::::::::::::::  callout
 
-## Інституційні бар'єри
+## Institutional Barriers
 
-Відкритий доступ - ідеальна ситуація для науки,
-але багато установ накладають обмеження на розповсюдження інформації,
-наприклад, для захисту потенційно патентованої інтелектуальної власності.
-Якщо ви стикаєтеся з такими обмеженнями,
-може бути доречно запитати про джерела їх мотивації.
-Можна запросити зробити виняток для конкретного проєкту чи галузі,
-або наполягати ширше на необхідності інституційної реформи для підтримки більшої відкритості у науці.
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-:::::::::::::::::::::::::::::::::::::::  challenge
-
-## Чи може моя робота бути у відкритому доступі?
-
-Дізнайтеся, чи дозволено вам відкрито розміщувати свою роботу в публічному репозиторії.
-Чи можете ви зробити це в односторонньому порядку, або вам потрібен дозвіл від когось у вашому закладі?
-Якщо так, то від кого?
+Sharing is the ideal for science,
+but many institutions place restrictions on sharing,
+for example to protect potentially patentable intellectual property.
+If you encounter such restrictions,
+it can be productive to inquire about the underlying motivations and
+either to request an exception for a specific project or domain,
+or to push more broadly for institutional reform to support more open science.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Де я можу розмістити свою роботу у відкритому доступі?
+## Can My Work Be Public?
 
-Чи є у вашій установі репозиторій або репозиторії, які ви можете
-використовувати для обміну документами, даними та програмним забезпеченням? Чим інституційні репозиторії
-відрізняються від таких сервісів, як [arXiV](https://arxiv.org/), [figshare](https://figshare.com/), [GitHub](https://github.com/) або [GitLab](https://about.gitlab.com/)?
+Find out whether you are allowed to host your work openly in a public repository.
+Can you do this unilaterally,
+or do you need permission from someone in your institution?
+If so, who?
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+## Where Can I Share My Work?
+
+Does your institution have a repository or repositories that you can
+use to share your papers, data and software? How do institutional repositories
+differ from services like [arXiV](https://arxiv.org/), [figshare](https://figshare.com/), [GitHub](https://github.com/) or [GitLab](https://about.gitlab.com/)?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
-- Проєкти можуть бути розміщені на серверах університетів, в особистих доменах або на публічному сервісі хостингу.
-- Правила щодо інтелектуальної власності та зберігання конфіденційної інформації застосовуються незалежно від місця розміщення коду та даних.
+- Projects can be hosted on university servers, on personal domains, or on a public hosting service.
+- Rules regarding intellectual property and storage of sensitive information apply no matter where code and data are hosted.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
