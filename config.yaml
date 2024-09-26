@@ -10,6 +10,8 @@
 # incubator: The Carpentries Incubator
 carpentry: 'swc'
 
+
+
 # Overall title for pages.
 title: 'Version Control with Git'
 
@@ -17,7 +19,7 @@ title: 'Version Control with Git'
 created: '2014-12-04'
 
 # Comma-separated list of keywords for the lesson
-keywords: 'software, data, lesson, The Carpentries, test'
+keywords: 'software, data, lesson, The Carpentries'
 
 # Life cycle stage of the lesson
 # possible values: pre-alpha, alpha, beta, stable
