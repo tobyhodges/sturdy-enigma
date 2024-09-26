@@ -1,33 +1,31 @@
 ---
-title: Exploring History
+title: Дослідження історії
 teaching: 25
 exercises: 0
 ---
 
 ::::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain what the HEAD of a repository is and how to use it.
-- Identify and use Git commit numbers.
-- Compare various versions of tracked files.
-- Restore old versions of files.
+- Пояснення, що таке HEAD репозиторію та як його використовувати.
+- Визначення та використання ідентифікаторів комітів Git.
+- Порівняння різних версій відстежуваних файлів.
+- Відновлення старих версій файлів.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::: questions
 
-- How can I identify old versions of files?
-- How do I review my changes?
-- How can I recover old versions of files?
+- Як визначити старі версії файлів?
+- Як переглянути свої зміни?
+- Як відновити старі версії файлів?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-As we saw in the previous episode, we can refer to commits by their
-identifiers.  You can refer to the *most recent commit* of the working
-directory by using the identifier `HEAD`.
+Як ми побачили у попередньому епізоді, ми можемо посилатися на коміти за їх ідентифікаторами.  Ви можете звернутися до _останнього коміту_ робочого каталогу
+за допомогою ідентифікатора `HEAD`.
 
-We've been adding one line at a time to `mars.txt`, so it's easy to track our
-progress by looking, so let's do that using our `HEAD`s.  Before we start,
-let's make a change to `mars.txt`, adding yet another line.
+Оскільки кожного разу ми додавали тільки один рядок до `mars.txt`, зараз нам буде легко простежити досягнутий прогрес. Зробімо це, використовуючи `HEAD`.  Перш ніж ми почнемо,
+давайте змінимо значення на `mars.txt`, додавши ще один рядок.
 
 ```bash
 $ nano mars.txt
@@ -41,7 +39,7 @@ But the Mummy will appreciate the lack of humidity
 An ill-considered change
 ```
 
-Now, let's see what we get.
+Тепер подивимося на наш результат.
 
 ```bash
 $ git diff HEAD mars.txt
@@ -59,21 +57,17 @@ index b36abfd..0848c8d 100644
 +An ill-considered change.
 ```
 
-which is the same as what you would get if you leave out `HEAD` (try it).  The
-real goodness in all this is when you can refer to previous commits.  We do
-that by adding `~1`
-(where "~" is "tilde", pronounced [**til**\-d*uh*])
-to refer to the commit one before `HEAD`.
+Це те саме, що ви отримаєте, якщо пропустите `HEAD` (спробуйте це).\
+Але справжня користь полягає у тому, що ви таким чином можете посилатися на попередні коміти.  Наприклад, додаючи `~1` (де "~" - це тільда), ми посилаємось на коміт зроблений безпосередньо перед `HEAD`.
 
 ```bash
 $ git diff HEAD~1 mars.txt
 ```
 
-If we want to see the differences between older commits we can use `git diff`
-again, but with the notation `HEAD~1`, `HEAD~2`, and so on, to refer to them:
+Якщо ми хочемо побачити різницю між старішими комітами, ми можемо знову використовувати `git diff`, використовуючи для послання на них `HEAD~1`, `HEAD~2` тощо:
 
 ```bash
-$ git diff HEAD~3 mars.txt
+$ git diff HEAD~2 mars.txt
 ```
 
 ```output
@@ -88,12 +82,10 @@ index df0654a..b36abfd 100644
 +An ill-considered change
 ```
 
-We could also use `git show` which shows us what changes we made at an older commit as
-well as the commit message, rather than the *differences* between a commit and our
-working directory that we see by using `git diff`.
+Ми також можемо використати команду `git show`, яка показує які зміни ми внесли у будь-якому попередньо зробленому коміті, а також і повідомлення коміту (на відміну від команди `git diff` яка покаже _різницю_ між комітом та нашим робочим каталогом).
 
 ```bash
-$ git show HEAD~3 mars.txt
+$ git show HEAD~2 mars.txt
 ```
 
 ```output
@@ -112,24 +104,18 @@ index 0000000..df0654a
 +Cold and dry, but everything is my favorite color
 ```
 
-In this way,
-we can build up a chain of commits.
-The most recent end of the chain is referred to as `HEAD`;
-we can refer to previous commits using the `~` notation,
-so `HEAD~1`
-means "the previous commit",
-while `HEAD~123` goes back 123 commits from where we are now.
+Таким чином, ми можемо побудувати ланцюжок комітів.
+Останній кінець ланцюжка називається `HEAD`;
+ми можемо посилатися на попередні коміти, використовуючи нотацію `~`,
+тому `HEAD~1`
+означає "попередній коміт",
+тоді як `HEAD~123` повертається на 123 коміти назад від того місця, де ми зараз знаходимось.
 
 We can also refer to commits using
 those long strings of digits and letters
-that `git log` displays.
-These are unique IDs for the changes,
-and "unique" really does mean unique:
-every change to any set of files on any computer
-has a unique 40-character identifier.
-Our first commit was given the ID
-`f22b25e3233b4645dabd0d81e651fe074bd8e73b`,
-so let's try this:
+that both `git log` and `git show` display.
+Це унікальні ідентифікатори змін, де "унікальний" насправді означає унікальний: кожна зміна будь-якого набору файлів на будь-якому комп'ютері буде мати унікальний 40-символьний ідентифікатор.
+Наш перший коміт отримав ідентифікатор `f22b25e3233b4645dabd0d81e651fe074bd8e73b`, тож спробуймо наступне:
 
 ```bash
 $ git diff f22b25e3233b4645dabd0d81e651fe074bd8e73b mars.txt
@@ -147,9 +133,7 @@ index df0654a..93a3e13 100644
 +An ill-considered change
 ```
 
-That's the right answer,
-but typing out random 40-character strings is annoying,
-so Git lets us use just the first few characters (typically seven for normal size projects):
+Це правильна відповідь, проте, введення випадкових рядків з 40 символів дуже незручно. Тож Git дозволяє нам використовувати тільки перші кілька символів (як правило, сім для проєктів нормального розміру):
 
 ```bash
 $ git diff f22b25e mars.txt
@@ -167,14 +151,11 @@ index df0654a..93a3e13 100644
 +An ill-considered change
 ```
 
-All right! So
-we can save changes to files and see what we've changed. Now, how
-can we restore older versions of things?
-Let's suppose we change our mind about the last update to
-`mars.txt` (the "ill-considered change").
+Це чудово! Отже,
+ми можемо зберегти зміни у файлах і побачити, що ми змінили. Наступне питання - а як ми можемо відновити їх старіші версії?
+Припустимо, що ми передумали щодо останнього оновлення файлу `mars.txt` (рядок "ill-considered change").
 
-`git status` now tells us that the file has been changed,
-but those changes haven't been staged:
+`git status` зараз каже нам, що файл був змінений, але ці зміни не були додані до зони стейджингу:
 
 ```bash
 $ git status
@@ -184,7 +165,7 @@ $ git status
 On branch main
 Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
-  (use "git checkout -- <file>..." to discard changes in working directory)
+  (use "git restore <file>..." to discard changes in working directory)
 
     modified:   mars.txt
 
@@ -192,10 +173,10 @@ no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
 We can put things back the way they were
-by using `git checkout`:
+by using `git restore`:
 
 ```bash
-$ git checkout HEAD mars.txt
+$ git restore mars.txt
 $ cat mars.txt
 ```
 
@@ -206,15 +187,15 @@ But the Mummy will appreciate the lack of humidity
 ```
 
 As you might guess from its name,
-`git checkout` checks out (i.e., restores) an old version of a file.
-In this case,
-we're telling Git that we want to recover the version of the file recorded in `HEAD`,
+`git restore` restores an old version of a file.
+By default,
+it recovers the version of the file recorded in `HEAD`,
 which is the last saved commit.
 If we want to go back even further,
-we can use a commit identifier instead:
+we can use a commit identifier instead, using `-s` option:
 
 ```bash
-$ git checkout f22b25e mars.txt
+$ git restore -s f22b25e mars.txt
 ```
 
 ```bash
@@ -231,151 +212,75 @@ $ git status
 
 ```output
 On branch main
-Changes to be committed:
-  (use "git reset HEAD <file>..." to unstage)
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   mars.txt
 
-    modified:   mars.txt
+no changes added to commit (use "git add" and/or "git commit -a")
 
 ```
 
-Notice that the changes are currently in the staging area.
-Again, we can put things back the way they were
-by using `git checkout`:
+Звернуть увагу, що зміни зараз знаходяться у зоні стейджінгу.
+Again, we can put things back the way they were by using `git restore`:
 
 ```bash
-$ git checkout HEAD mars.txt
+$ git restore mars.txt
+$ cat mars.txt
 ```
-
-:::::::::::::::::::::::::::::::::::::::::  callout
-
-## Don't Lose Your HEAD
-
-Above we used
-
-```bash
-$ git checkout f22b25e mars.txt
-```
-
-to revert `mars.txt` to its state after the commit `f22b25e`. But be careful!
-The command `checkout` has other important functionalities and Git will misunderstand
-your intentions if you are not accurate with the typing. For example,
-if you forget `mars.txt` in the previous command.
-
-```bash
-$ git checkout f22b25e
-```
-
-```error
-Note: checking out 'f22b25e'.
-
-You are in 'detached HEAD' state. You can look around, make experimental
-changes and commit them, and you can discard any commits you make in this
-state without impacting any branches by performing another checkout.
-
-If you want to create a new branch to retain commits you create, you may
-do so (now or later) by using -b with the checkout command again. Example:
-
- git checkout -b <new-branch-name>
-
-HEAD is now at f22b25e Start notes on Mars as a base
-```
-
-The "detached HEAD" is like "look, but don't touch" here,
-so you shouldn't make any changes in this state.
-After investigating your repo's past state, reattach your `HEAD` with `git checkout main`.
-
-
-::::::::::::::::::::::::::::::::::::::::::::::::::
-
-It's important to remember that
-we must use the commit number that identifies the state of the repository
-*before* the change we're trying to undo.
-A common mistake is to use the number of
-the commit in which we made the change we're trying to discard.
-In the example below, we want to retrieve the state from before the most
-recent commit (`HEAD~1`), which is commit `f22b25e`:
-
-![](fig/git-checkout.svg){alt='Git Checkout'}
-
-So, to put it all together,
-here's how Git works in cartoon form:
-
-![https://figshare.com/articles/How_Git_works_a_cartoon/1328266](fig/git_staging.svg)
-
-:::::::::::::::::::::::::::::::::::::::::  callout
-
-## Simplifying the Common Case
-
-If you read the output of `git status` carefully,
-you'll see that it includes this hint:
 
 ```output
-(use "git checkout -- <file>..." to discard changes in working directory)
+Cold and dry, but everything is my favorite color
+The two moons may be a problem for Wolfman
+But the Mummy will appreciate the lack of humidity
 ```
 
-As it says,
-`git checkout` without a version identifier restores files to the state saved in `HEAD`.
-The double dash `--` is needed to separate the names of the files being recovered
-from the command itself:
-without it,
-Git would try to use the name of the file as the commit identifier.
+Важливо пам'ятати, що ми повинні використовувати номер коміту, який ідентифікує стан репозиторію _до_ зміни, яку ми намагаємося скасувати.
+Поширеною помилкою є використання номеру коміту, в якому ми зробили зміни, які намагаємося скасувати.
+In the example below, we want to retrieve the state from before the most
+recent commit (`HEAD~1`), which is commit `f22b25e`. We use the `.` to mean all files:
 
+![](fig/git-restore.svg){alt='A diagram showing how git restore can be used to restore the previous version of two files'}
 
-::::::::::::::::::::::::::::::::::::::::::::::::::
+Отже, якщо скласти це все разом, то Git працює як зображено у цьому коміксі:
 
-The fact that files can be reverted one by one
-tends to change the way people organize their work.
-If everything is in one large document,
-it's hard (but not impossible) to undo changes to the introduction
-without also undoing changes made later to the conclusion.
-If the introduction and conclusion are stored in separate files,
-on the other hand,
-moving backward and forward in time becomes much easier.
+![https://figshare.com/articles/How\_Git\_works\_a\_cartoon/1328266](fig/git_staging.svg){alt='A diagram showing the entire git workflow: local changes are staged using git add, applied to the local repository using git commit, and can be restored from the repository using git checkout'}
+
+Той факт, що файли можна відновлювати окремо, сприяє змінам в організації роботи.
+Якщо все знаходиться в одному величезному документі, буде важко (але не неможливо) скасувати зміни у вступі без скасування також змін, внесених пізніше до висновку.
+З іншого боку, якщо вступ і висновок зберігаються в окремих файлах, рухатися вперед і назад в часі стає набагато легше.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Recovering Older Versions of a File
+## Відновлення старих версій файлу
 
-Jennifer has made changes to the Python script that she has been working on for weeks, and the
-modifications she made this morning "broke" the script and it no longer runs. She has spent
-\~ 1hr trying to fix it, with no luck...
+Дженніфер зробила цього ранку деякі зміни у скрипті Python, над яким вона до цього працювала тижнями, та "зламала" його - він більше не запускається. Вона витратила майже годину, намагаючись виправити його, але безрезультатно...
 
-Luckily, she has been keeping track of her project's versions using Git! Which commands below will
-let her recover the last committed version of her Python script called
-`data_cruncher.py`?
+На щастя, вона використовує Git для відстеження змін у свому проєкті! Які з наведених нижче команд допоможуть їй відновити останню збережену у Git версію її скрипту, який називається `data_cruncher.py`?
 
-1. `$ git checkout HEAD`
+1. `$ git restore`
 
-2. `$ git checkout HEAD data_cruncher.py`
+2. `$ git restore data_cruncher.py`
 
-3. `$ git checkout HEAD~1 data_cruncher.py`
+3. `$ git restore -s HEAD~1 data_cruncher.py`
 
-4. `$ git checkout <unique ID of last commit> data_cruncher.py`
+4. `$ git restore -s <unique ID of last commit> data_cruncher.py`
 
-5. Both 2 and 4
+5. Як 2, так і 4
 
 :::::::::::::::  solution
 
-## Solution
+## Рішення
 
-The answer is (5)-Both 2 and 4.
+Відповідь (5) - як 2, так і 4.
 
-The `checkout` command restores files from the repository, overwriting the files in your working
-directory. Answers 2 and 4 both restore the *latest* version *in the repository* of the file
-`data_cruncher.py`. Answer 2 uses `HEAD` to indicate the *latest*, whereas answer 4 uses the
-unique ID of the last commit, which is what `HEAD` means.
+The `restore` command restores files from the repository, overwriting the files in your working
+directory. Обидві відповіді 2 та 4 відновлюють _останню збережену в репозиторії_ версію файлу `data_cruncher.py`. Відповідь 2 використовує `HEAD`, щоб вказати _останній_ коміт, тоді як відповідь 4 використовує унікальний ідентифікатор останнього коміту, що саме й означає `HEAD`.
 
-Answer 3 gets the version of `data_cruncher.py` from the commit *before* `HEAD`, which is NOT
-what we wanted.
+Відповідь 3 замінить `data_cruncher.py` його версією з коміту _перед_ `HEAD`, що НЕ є тим, що ми хотіли.
 
-Answer 1 can be dangerous! Without a filename, `git checkout` will restore **all files**
-in the current directory (and all directories below it) to their state at the commit specified.
-This command will restore `data_cruncher.py` to the latest commit version, but it will also
-restore *any other files that are changed* to that version, erasing any changes you may
-have made to those files!
-As discussed above, you are left in a *detached* `HEAD` state, and you don't want to be there.
-
-
+Answer 1 results in an error. You need to specify a file to restore. If you want to restore all files
+you should use `git restore .`
 
 :::::::::::::::::::::::::
 
@@ -383,43 +288,34 @@ As discussed above, you are left in a *detached* `HEAD` state, and you don't wan
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Reverting a Commit
+## Скасування коміту
 
-Jennifer is collaborating with colleagues on her Python script.  She
-realizes her last commit to the project's repository contained an error, and
-wants to undo it.  Jennifer wants to undo correctly so everyone in the project's
-repository gets the correct change. The command `git revert [erroneous commit ID]` will create a
-new commit that reverses the erroneous commit.
+Дженніфер співпрацює з колегами над її скриптом Python.  Вона зрозуміла, що її останній коміт до репозиторію проєкту містив помилку, і хоче його скасувати.  Дженніфер хоче скасувати його правильним чином, щоб всі користувачі репозиторію цього проєкту отримали правильні зміни. Команда `git revert [erroneous commit ID]` створить новий коміт, який скасує помилковий коміт.
 
 The command `git revert` is
-different from `git checkout [commit ID]` because `git checkout` returns the
+different from `git restore -s [commit ID] .` because `git restore` returns the
 files not yet committed within the local repository to a previous state, whereas `git revert`
 reverses changes committed to the local and project repositories.
 
-Below are the right steps and explanations for Jennifer to use `git revert`,
-what is the missing command?
+Нижче наведені правильні кроки та пояснення для Дженніфер щодо користування `git revert`. Яка команда відсутня?
 
-1. `________ # Look at the git history of the project to find the commit ID`
+1. `________ # Подивіться на історію змін, щоб знайти ідентифікатор коміту`
 
-2. Copy the ID (the first few characters of the ID, e.g. 0b1d055).
+2. Скопіюйте цей ID (перші кілька символів ID, наприклад 0b1d055).
 
 3. `git revert [commit ID]`
 
-4. Type in the new commit message.
+4. Введіть повідомлення для нового коміту.
 
-5. Save and close
+5. Збережіть його та закрийте редактор.
 
 :::::::::::::::  solution
 
-## Solution
+## Рішення
 
-The command `git log` lists project history with commit IDs.
+Команда `git log` зображує історію проєкту з ідентифікаторами комітів.
 
-The command `git show HEAD` shows changes made at the latest commit, and lists
-the commit ID; however, Jennifer should double-check it is the correct commit, and no one
-else has committed changes to the repository.
-
-
+Команда `git show HEAD` покаже зміни, зроблені в останньому коміті, і покаже його ID; однак Дженніфер повинна перевірити, що це правильний коміт, а не нові зміни, які зробив у спільному репозиторії хтось інший.
 
 :::::::::::::::::::::::::
 
@@ -427,9 +323,9 @@ else has committed changes to the repository.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Understanding Workflow and History
+## Розуміння послідовності дій та історії
 
-What is the output of the last command in
+Який результат останньої команди в цій послідовності?
 
 ```bash
 $ cd planets
@@ -437,43 +333,46 @@ $ echo "Venus is beautiful and full of love" > venus.txt
 $ git add venus.txt
 $ echo "Venus is too hot to be suitable as a base" >> venus.txt
 $ git commit -m "Comment on Venus as an unsuitable base"
-$ git checkout HEAD venus.txt
+$ git restore venus.txt
 $ cat venus.txt #this will print the contents of venus.txt to the screen
 ```
 
 1. ```output
-  Venus is too hot to be suitable as a base
-  ```
+   ```
+
+Venus is too hot to be suitable as a base
+
+````
 2. ```output
-  Venus is beautiful and full of love
-  ```
+Venus is beautiful and full of love
+````
+
 3. ```output
-  Venus is beautiful and full of love
-  Venus is too hot to be suitable as a base
-  ```
+   ```
+
+Venus is beautiful and full of love
+Venus is too hot to be suitable as a base
+
+````
 4. ```output
-  Error because you have changed venus.txt without committing the changes
-  ```
+Error because you have changed venus.txt without committing the changes
+````
 
 :::::::::::::::  solution
 
-## Solution
+## Рішення
 
-The answer is 2.
+Правильною є відповідь 2.
 
-The command `git add venus.txt` places the current version of `venus.txt` into the staging area.
-The changes to the file from the second `echo` command are only applied to the working copy,
-not the version in the staging area.
+Команда `git add venus.txt` розміщує поточну версію 'venus.txt' в зоні стейджингу.
+Зміни до файлу з другої команди `echo` будуть зроблені лише у робочій копії цього файлу, але не у його версії в зоні стейджингу.
 
-So, when `git commit -m "Comment on Venus as an unsuitable base"` is executed,
-the version of `venus.txt` committed to the repository is the one from the staging area and
-has only one line.
+Тож, коли виконується команда `git commit -m "Comment on Venus as an unsuitable base"`, версія `venus.txt`, яка буде збережена у коміті, буде з зони стейджингу та буде мати тільки один рядок.
 
-At this time, the working copy still has the second line (and
-`git status` will show that the file is modified). However, `git checkout HEAD venus.txt`
+На цей час робоча копія файлу ще має другий рядок (і тому `git status` покаже, що файл змінено). However, `git restore venus.txt`
 replaces the working copy with the most recently committed version of `venus.txt`.
 
-So, `cat venus.txt` will output
+Тож, `cat venus.txt` покаже
 
 ```output
 Venus is beautiful and full of love.
@@ -485,62 +384,50 @@ Venus is beautiful and full of love.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Checking Understanding of `git diff`
+## Перевірка розуміння `git diff`
 
-Consider this command: `git diff HEAD~9 mars.txt`. What do you predict this command
-will do if you execute it? What happens when you do execute it? Why?
+Розглянемо цю команду: `git diff HEAD~9 mars.txt`. Що, на вашу думку, зробить ця команда, якщо ви її виконаєте? Що станеться, коли ви її виконаєте? Чому?
 
-Try another command, `git diff [ID] mars.txt`, where [ID] is replaced with
-the unique identifier for your most recent commit. What do you think will happen,
-and what does happen?
-
+Спробуйте іншу команду, `git diff [ID] mars.txt`, де [ID] замінено на унікальний ідентифікатор вашого останнього коміту. Як ви думаєте, що вона зробить? Виконайте її та перевірте, чи це так.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Getting Rid of Staged Changes
+## Скасування змін у зоні стейджингу
 
-`git checkout` can be used to restore a previous commit when unstaged changes have
+`git restore` can be used to restore a previous commit when unstaged changes have
 been made, but will it also work for changes that have been staged but not committed?
 Make a change to `mars.txt`, add that change using `git add`,
-then use `git checkout` to see if you can remove your change.
+then use `git restore` to see if you can remove your change.
 
 :::::::::::::::  solution
 
-## Solution
+## Відповідь
 
-After adding a change, `git checkout` can not be used directly.
-Let's look at the output of `git status`:
+After adding a change, `git restore` can not be used directly.
+Подивіться на результат `git status`:
 
 ```output
 On branch main
 Changes to be committed:
-  (use "git reset HEAD <file>..." to unstage)
-
+  (use "git restore --staged <file>..." to unstage)
         modified:   mars.txt
 
 ```
 
-Note that if you don't have the same output
-you may either have forgotten to change the file,
-or you have added it *and* committed it.
+Зауважте, що якщо ви не маєте такого самого результату, то можливо, ви забули змінити файл, або ви не тільки додали його до зони стейджингу, _а також_ зробили коміт.
 
-Using the command `git checkout -- mars.txt` now does not give an error,
+Using the command `git restore mars.txt` now does not give an error,
 but it does not restore the file either.
-Git helpfully tells us that we need to use `git reset` first
+Git helpfully tells us that we need to use `git restore --staged` first
 to unstage the file:
 
 ```bash
-$ git reset HEAD mars.txt
+$ git restore --staged mars.txt
 ```
 
-```output
-Unstaged changes after reset:
-M	mars.txt
-```
-
-Now, `git status` gives us:
+Тепер `git status` зображує наступне:
 
 ```bash
 $ git status
@@ -550,18 +437,18 @@ $ git status
 On branch main
 Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
-  (use "git checkout -- <file>..." to discard changes in working directory)
+  (use "git git restore <file>..." to discard changes in working directory)
 
         modified:   mars.txt
 
 no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
-This means we can now use `git checkout` to restore the file
+This means we can now use `git restore` to restore the file
 to the previous commit:
 
 ```bash
-$ git checkout -- mars.txt
+$ git restore mars.txt
 $ git status
 ```
 
@@ -576,38 +463,34 @@ nothing to commit, working tree clean
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Explore and Summarize Histories
+## Перегляд історії
 
-Exploring history is an important part of Git, and often it is a challenge to find
-the right commit ID, especially if the commit is from several months ago.
+Перегляд історії є важливою частиною роботи з Git, але часто нелегко знайти правильний ідентифікатор коміту, особливо якщо коміт був зроблений декілька місяців тому.
 
-Imagine the `planets` project has more than 50 files.
-You would like to find a commit that modifies some specific text in `mars.txt`.
-When you type `git log`, a very long list appeared.
-How can you narrow down the search?
+Уявіть, що проєкт `planets` має більш ніж 50 файлів.
+Ви хотіли б знайти коміт, який змінює певний текст у `mars.txt`.
+Коли ви вводите `git log`, з'являється дуже довгий список.
+Як можна звузити коло пошуку?
 
-Recall that the `git diff` command allows us to explore one specific file,
-e.g., `git diff mars.txt`. We can apply a similar idea here.
+Нагадаємо, що команда `git diff` може використовуватись для одного конкретного файлу, наприклад, `git diff mars.txt`. Ми можемо застосувати тут подібну ідею.
 
 ```bash
 $ git log mars.txt
 ```
 
-Unfortunately some of these commit messages are very ambiguous, e.g., `update files`.
-How can you search through these files?
+На жаль, деякі з цих повідомлень комітів дуже неоднозначні, наприклад, `update files`.
+Як же переглянути усі ці версії файлу?
 
-Both `git diff` and `git log` are very useful and they summarize a different part of the history
-for you.
-Is it possible to combine both? Let's try the following:
+Обидві команди `git diff` та `git log` дуже корисні для отримання звітів про різні деталі історії проєкту.
+Але чи можна об'єднати їх результат в одну команду? Давайте спробуємо наступне:
 
 ```bash
 $ git log --patch mars.txt
 ```
 
-You should get a long list of output, and you should be able to see both commit messages and
-the difference between each commit.
+Ви повинні отримати довгий список, у якому ви побачите як повідомлення коміту, так і зроблені зміни.
 
-Question: What does the following command do?
+Питання: Що робить наступна команда?
 
 ```bash
 $ git log --patch HEAD~9 *.txt
@@ -617,9 +500,7 @@ $ git log --patch HEAD~9 *.txt
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
-- `git diff` displays differences between commits.
-- `git checkout` recovers old versions of files.
+- `git diff` відображає відмінності між комітами.
+- `git restore` recovers old versions of files.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
